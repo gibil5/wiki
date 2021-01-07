@@ -2,7 +2,7 @@
 Test Util Library 
 
     Created:    28 dec 2020
-    Last up:     6 jan 2021
+    Last up:     7 jan 2021
 """
 import unittest
 import inspect
