@@ -28,7 +28,7 @@ class UtilLibraryTestCase(unittest.TestCase):
         """
         self.prefix = '\n\n'
 
-        self.list = ['CSS', 'Django', 'Git', 'HTML', 'Python', 'Test']
+        self.list = ['Css', 'Django', 'Git', 'HTML', 'Python', 'Test']
         #self.list = util.list_entries()
         self.entry = "# Python\n\nPython is a programming language that can be used both for writing **command-line scripts** or building **web applications**."
 
@@ -43,8 +43,8 @@ class UtilLibraryTestCase(unittest.TestCase):
         """
         print(f"{self.prefix}test_lib_list_entries")
         list_entries = util.list_entries()
-        if self.verbose:
-            print(list_entries)
+        #if self.verbose:
+        #    print(list_entries)
         self.assertEqual(list_entries, self.list)
 
 
@@ -57,18 +57,17 @@ class UtilLibraryTestCase(unittest.TestCase):
 
         #titles = ['Python', 'python', 'Not available']
         titles = ['python', 'not_available']
-        #titles = ['python']
-        #titles = ['not_available']
 
         for title in titles:
             try:
                 entry = util.get_entry(title)
             except FileNotFoundError:
-                print('\nERROR')
-                print('File not found !')
+                #print('\nERROR')
+                #print('File not found !')
+                pass
             else:
-                print('\nSUCCESS')
-                print(entry)
+                #print('\nSUCCESS')
+                #print(entry)
                 self.assertEqual(entry, self.entry)
 
 

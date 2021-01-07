@@ -149,7 +149,7 @@ class SimpleTest(unittest.TestCase):
         x.printx(f'{input_submit}')
 
 
-    @unittest.skip
+    #@unittest.skip
     def test_create_post(self):
         """
         Create entry
