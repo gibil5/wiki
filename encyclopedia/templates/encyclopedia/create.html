@@ -1,0 +1,40 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %}
+
+
+{% block body %}
+
+    <h1>Create</h1>
+
+    <form action="/create/" method="post">
+        {% csrf_token %}
+      
+        <!--
+        <input class="search" type="text" name="q" placeholder="Search Encyclopedia">
+        -->
+        <!--
+        <div class="">
+          <input class="" type="text" name="name" placeholder="Name">
+        </div>
+        <div class="">
+          <input class="" type="text" name="content" placeholder="Content">
+        </div>
+        <input type="submit" name="submit" value="Create">
+        
+        {{ form }}
+        {{ form.as_table }}
+        {{ form.as_p }}
+        {{ form.as_ul }} 
+      -->
+        <table>
+          {{ form.as_table }}
+        </table>
+        <div class="">
+          <input type="submit" value="Create">
+        </div>
+    </form>
+
+{% endblock %}
