@@ -1,5 +1,6 @@
 """
-Test HTTP Transactions
+Test Views
+
     Created:    28 dec 2020
     Last up:     7 Jan 2021
 """
@@ -32,23 +33,23 @@ class SimpleTest(unittest.TestCase):
         #self.verbose = False
 
     #@unittest.skip
-    def test_index(self):
+    def test_view_index(self):
         """
-        Index entries
+        Index view
         GET request
         """
-        x.printx(f"{self.prefix}test_index")
+        print(f"{self.prefix}test_view_index")
         response = self.client.get('/')
         #if self.verbose:
         #    util.print_response(response)
 
     #@unittest.skip
-    def test_show(self):
+    def test_view_show(self):
         """
-        Show entry
+        Show view
         GET request
         """
-        x.printx(f"{self.prefix}test_show")
+        print(f"{self.prefix}test_view_show")
 
         fnames = ['Css', 'HTML', 'Git', 'Django', 'Python', 'ne']
         pages = ['CSS', 'HTML', 'Git', 'Django', 'Python', 'ne']
@@ -80,12 +81,12 @@ class SimpleTest(unittest.TestCase):
 
 
     #@unittest.skip
-    def test_search(self):
+    def test_view_search(self):
         """
-        Search entry
+        Search view
         GET request
         """
-        x.printx(f"{self.prefix}test_search")
+        print(f"{self.prefix}test_view_search")
 
         #fnames = ['Css']
         #pages = ['CSS']
@@ -120,12 +121,12 @@ class SimpleTest(unittest.TestCase):
 
 
     #@unittest.skip
-    def test_create_get(self):
+    def test_view_create_get(self):
         """
-        Create entry
+        Create view
         GET
         """
-        x.printx(f"{self.prefix}test_create_get")
+        print(f"{self.prefix}test_view_create_get")
 
         request = "/create/"
         response = self.client.get(request)
@@ -150,9 +151,9 @@ class SimpleTest(unittest.TestCase):
 
 
     #@unittest.skip
-    def test_create_post(self):
+    def test_view_create_post(self):
         """
-        Create entry
+        Create view
         POST
 
         (fv, tv)[test()]
@@ -163,7 +164,7 @@ class SimpleTest(unittest.TestCase):
         x.printx(msg) if verb() else pass
         printx(msg)
         """
-        x.printx(f"{self.prefix}test_create_post")
+        print(f"{self.prefix}test_view_create_post")
 
         # Init
         title = 'Test'

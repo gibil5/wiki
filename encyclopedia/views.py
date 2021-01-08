@@ -1,16 +1,15 @@
 """
 Module Views
     Created:    28 dec 2020
-    Last up:     6 jan 2021
+    Last up:     8 jan 2021
 
 Interface:
-    - index
-    - search
-    - wiki
-    - create
-    - edit
-
-Do Pythonic coding
+    index
+    search
+    wiki
+    create
+    edit
+    update
 """
 from markdown2 import Markdown
 from django.shortcuts import render

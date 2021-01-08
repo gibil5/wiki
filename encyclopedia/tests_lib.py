@@ -1,5 +1,5 @@
 """
-Test Util Library 
+Test Libs - Util
 
     Created:    28 dec 2020
     Last up:     7 jan 2021
@@ -9,7 +9,6 @@ import inspect
 from django.test import Client
 from . import util
 
-# Create your tests here.
 SKIP_LIB_TESTS = 0
 
 # ------------------------------------------------------------------------------
@@ -27,12 +26,8 @@ class UtilLibraryTestCase(unittest.TestCase):
         Setup
         """
         self.prefix = '\n\n'
-
         self.list = ['Css', 'Django', 'Git', 'HTML', 'Python', 'Test']
-        #self.list = util.list_entries()
         self.entry = "# Python\n\nPython is a programming language that can be used both for writing **command-line scripts** or building **web applications**."
-
-        #self.verbose = True
         self.verbose = False
 
 
@@ -113,5 +108,3 @@ class UtilLibraryTestCase(unittest.TestCase):
         if self.verbose:
             print(titles)
         self.assertEqual(titles, None)
-
-
