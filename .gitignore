@@ -1,2 +1,4 @@
 
 .scannerwork/
+.coverage
+db.sqlite3
