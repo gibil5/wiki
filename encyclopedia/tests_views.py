@@ -10,6 +10,12 @@ from . import util
 from . import lib as x
 
 SKIP_REQ_TESTS = 0
+SKIP_INDEX = 0
+SKIP_SHOW = 0
+SKIP_CREATE = 0
+SKIP_SEARCH = 0
+SKIP_EDIT = 0
+SKIP_UPDATE = 0
 
 # ------------------------------------------------------------------------------
 #                              Test Transactions
@@ -33,6 +39,7 @@ class SimpleTest(unittest.TestCase):
         #self.verbose = False
 
     #@unittest.skip
+    @unittest.skipIf(SKIP_INDEX, 'x')
     def test_view_index(self):
         """
         Index view
@@ -44,6 +51,7 @@ class SimpleTest(unittest.TestCase):
         #    util.print_response(response)
 
     #@unittest.skip
+    @unittest.skipIf(SKIP_SHOW, 'x')
     def test_view_show(self):
         """
         Show view
@@ -81,6 +89,7 @@ class SimpleTest(unittest.TestCase):
 
 
     #@unittest.skip
+    @unittest.skipIf(SKIP_SEARCH, 'x')
     def test_view_search(self):
         """
         Search view
@@ -121,6 +130,7 @@ class SimpleTest(unittest.TestCase):
 
 
     #@unittest.skip
+    @unittest.skipIf(SKIP_CREATE, 'x')
     def test_view_create_get(self):
         """
         Create view
@@ -151,22 +161,13 @@ class SimpleTest(unittest.TestCase):
 
 
     #@unittest.skip
+    @unittest.skipIf(SKIP_CREATE, 'x')
     def test_view_create_post(self):
         """
         Create view
         POST
-
-        (fv, tv)[test()]
-
-        (x.printx(msg), pass)[verb()]
-        (x.printx(msg), )[verb()]
-
-        x.printx(msg) if verb() else pass
-        printx(msg)
         """
         print(f"{self.prefix}test_view_create_post")
-
-        # Init
         title = 'Test'
         content = 'This is the content...'
         util.delete_entry(title)
@@ -176,15 +177,12 @@ class SimpleTest(unittest.TestCase):
         x.printx(msg)
         response = self.client.post('/create/', {'title': {title}, 'content': {content}})
         x.printx(response)
-
         # Check that the response is 200 OK
         self.assertEqual(response.status_code, 200)
-
         # Check page
         title = util.parse_title(str(response.content))
         x.printx(f'Title: {title}')
         self.assertEqual(title, 'Test')
-
 
         # Entry is not created: already exists - error
         msg = '\n\nEntry is not created: already exists'
@@ -205,6 +203,72 @@ class SimpleTest(unittest.TestCase):
         x.printx(response)
         # Check that the response is 200 OK
         self.assertEqual(response.status_code, 200)
+        # Check page
+        title = util.parse_title(str(response.content))
+        x.printx(f'Title: {title}')
+        self.assertEqual(title, 'Error: Form is not valid !')
+
+
+    #@unittest.skip
+    @unittest.skipIf(SKIP_EDIT, 'x')
+    def test_view_edit_get(self):
+        """
+        Edit view
+        GET
+        """
+        print(f"{self.prefix}test_view_edit_get")
+        entry = 'Css'
+
+        # Edit GET
+        msg = '\n\nEntry is edited - GET'
+        x.printx(msg)        
+        request = f'/edit/{entry}/'
+        response = self.client.get(request)
+        # Check that the response is 200 OK
+        self.assertEqual(response.status_code, 200)
+        # Check that the page has the correct title
+        title = util.parse_title(str(response.content))
+        x.printx(f'\n{title}')
+        # The page exists
+        self.assertEqual(title, 'Edit')
+        # Check inputs
+        input_title = util.parse_inputs(str(response.content), 'input', 'title')
+        #x.printx(f'{input_title}')
+        input_content = util.parse_inputs(str(response.content), 'textarea', 'content')
+        #x.printx(f'{input_content}')
+        input_submit = util.parse_inputs(str(response.content), 'input', 'Save')
+        #x.printx(f'{input_submit}')
+
+
+    @unittest.skipIf(SKIP_UPDATE, 'x')
+    def test_view_update_post(self):
+        """
+        Update view
+        POST
+        """
+        print(f"{self.prefix}test_view_update_post")
+        title = 'Test'
+        content = 'This is the content...'
+
+        # Entry is updated - success
+        msg = '\n\nEntry is updated - POST'
+        x.printx(msg)
+        response = self.client.post('/update/', {'title': {title}, 'content': {content}})
+        # Check that the response is 200 OK
+        self.assertEqual(response.status_code, 200)
+        # Check page
+        title = util.parse_title(str(response.content))
+        x.printx(f'Title: {title}')
+        self.assertEqual(title, 'Test')
+
+        # Form is not valid - error
+        msg = '\n\nForm is not valid'
+        x.printx(msg)
+        response = self.client.post('/update/', {'title_x': {title}, 'content': {content}})
+
+        # Check that the response is 200 OK
+        self.assertEqual(response.status_code, 200)
+
         # Check page
         title = util.parse_title(str(response.content))
         x.printx(f'Title: {title}')

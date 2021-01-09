@@ -7,5 +7,4 @@ class Page(models.Model):
     content = models.CharField(max_length=128)
 
     def __str__(self):
-        #return f"{self.name} {self.title}"
         return f"Page: {self.title}"
