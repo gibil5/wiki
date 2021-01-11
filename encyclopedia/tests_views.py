@@ -2,7 +2,7 @@
 Test Views
 
     Created:    28 dec 2020
-    Last up:     7 Jan 2021
+    Last up:    11 Jan 2021
 """
 import unittest
 from django.test import Client

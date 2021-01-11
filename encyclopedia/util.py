@@ -1,7 +1,7 @@
 """
 Module Util
     Created:    28 dec 2020
-    Last up:     4 jan 2021
+    Last up:    11 jan 2021
 
 Library for interaction with MD files
 

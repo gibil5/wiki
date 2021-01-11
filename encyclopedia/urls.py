@@ -1,7 +1,7 @@
 """
 Module Url
     Created:    28 dec 2020
-    Last up:     4 Jan 2021
+    Last up:    11 jan 2021
 """
 from django.urls import path
 from . import views

@@ -2,7 +2,7 @@
 Test Libs - Util
 
     Created:    28 dec 2020
-    Last up:     7 jan 2021
+    Last up:    11 jan 2021
 """
 import unittest
 import inspect
