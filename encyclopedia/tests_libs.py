@@ -8,6 +8,7 @@ import unittest
 import inspect
 from django.test import Client
 from . import util
+from . import lib as x
 
 SKIP_LIB_TESTS = 0
 
@@ -28,7 +29,6 @@ class UtilLibraryTestCase(unittest.TestCase):
         self.prefix = '\n\n'
         self.list = ['Css', 'Django', 'Git', 'HTML', 'Python', 'Test']
         self.entry = "# Python\n\nPython is a programming language that can be used both for writing **command-line scripts** or building **web applications**."
-        self.verbose = False
 
 
     #@unittest.skip
@@ -38,8 +38,6 @@ class UtilLibraryTestCase(unittest.TestCase):
         """
         print(f"{self.prefix}test_lib_list_entries")
         list_entries = util.list_entries()
-        #if self.verbose:
-        #    print(list_entries)
         self.assertEqual(list_entries, self.list)
 
 
@@ -49,20 +47,16 @@ class UtilLibraryTestCase(unittest.TestCase):
         Get entry
         """
         print(f"{self.prefix}test_lib_get_entry")
-
-        #titles = ['Python', 'python', 'Not available']
         titles = ['python', 'not_available']
 
         for title in titles:
             try:
-                entry = util.get_entry(title)
+                entry = util.get_entry(title=title)
             except FileNotFoundError:
-                #print('\nERROR')
-                #print('File not found !')
-                pass
+                x.printx('\nERROR')
+                x.printx('File not found !')
             else:
-                #print('\nSUCCESS')
-                #print(entry)
+                x.printx('\nSUCCESS')
                 self.assertEqual(entry, self.entry)
 
 
@@ -77,10 +71,10 @@ class UtilLibraryTestCase(unittest.TestCase):
         titles = ['Test 1', 'Test 2', 'Test 3']
         content = 'This is the **test** content...'
         for title in titles:
-            util.save_entry(title, content)
+            util.save_entry(title=title, content=content)
             #self.assertEqual(list_entries, self.list)
         for title in titles:
-            util.delete_entry(title)
+            util.delete_entry(title=title)
             #self.assertEqual(list_entries, self.list)
 
 
@@ -91,9 +85,7 @@ class UtilLibraryTestCase(unittest.TestCase):
         """
         print(f"{self.prefix}test_lib_sub_success")
         query = 'PY'
-        titles = util.is_subtring(query, self.list)
-        if self.verbose:
-            print(titles)
+        titles = util.is_subtring(query=query, x_list=self.list)
         self.assertEqual(titles, ['python'])
 
 
@@ -104,7 +96,5 @@ class UtilLibraryTestCase(unittest.TestCase):
         """
         print(f"{self.prefix}test_lib_sub_failure")
         query = 'x'
-        titles = util.is_subtring(query, self.list)
-        if self.verbose:
-            print(titles)
+        titles = util.is_subtring(query=query, x_list=self.list)
         self.assertEqual(titles, None)

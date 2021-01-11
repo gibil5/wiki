@@ -5,20 +5,10 @@
 {% endblock %}
 
 {% block body %}
-
 <div>
     {{ html | safe}}
 </div>
-
 <a href="{% url 'edit' page %}">
     Edit
 </a>
-
-<!--
-<form action="{% url 'edit' page %}" method="post">
-    {% csrf_token %}
-    <button type="submit" name="page" value="css" class="btn-link">Go</button>
-</form>
--->
-
 {% endblock %}

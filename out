@@ -1,0 +1,62 @@
+INFO: Scanner configuration file: /Users/gibil/sonarqube/sonar-scanner-4.4.0.2170-macosx/conf/sonar-scanner.properties
+INFO: Project root configuration file: /Users/gibil/vscode/edx/cs50/project_1/web50/projects/2020/x/wiki/sonar-project.properties
+INFO: SonarScanner 4.4.0.2170
+INFO: Java 11.0.3 AdoptOpenJDK (64-bit)
+INFO: Mac OS X 10.15.7 x86_64
+INFO: User cache: /Users/gibil/.sonar/cache
+INFO: Scanner configuration file: /Users/gibil/sonarqube/sonar-scanner-4.4.0.2170-macosx/conf/sonar-scanner.properties
+INFO: Project root configuration file: /Users/gibil/vscode/edx/cs50/project_1/web50/projects/2020/x/wiki/sonar-project.properties
+INFO: Analyzing on SonarQube server 8.4.1
+INFO: Default locale: "en_US", source code encoding: "UTF-8" (analysis is platform dependent)
+INFO: Load global settings
+INFO: Load global settings (done) | time=53ms
+INFO: Server id: 8D11EB71-AXUVIz6Fhn65ZNvG3vux
+INFO: User cache: /Users/gibil/.sonar/cache
+INFO: Load/download plugins
+INFO: Load plugins index
+INFO: Load plugins index (done) | time=37ms
+INFO: Load/download plugins (done) | time=102ms
+INFO: Process project properties
+INFO: Process project properties (done) | time=7ms
+INFO: Execute project builders
+INFO: Execute project builders (done) | time=4ms
+INFO: Project key: django_wiki
+INFO: Base dir: /Users/gibil/vscode/edx/cs50/project_1/web50/projects/2020/x/wiki
+INFO: Working dir: /Users/gibil/vscode/edx/cs50/project_1/web50/projects/2020/x/wiki/.scannerwork
+INFO: Load project settings for component key: 'django_wiki'
+INFO: Load project settings for component key: 'django_wiki' (done) | time=10ms
+INFO: Load quality profiles
+INFO: Load quality profiles (done) | time=69ms
+INFO: Load active rules
+INFO: Load active rules (done) | time=453ms
+INFO: Indexing files...
+INFO: Project configuration:
+INFO:   Excluded sources: **/*__init__*, **/*.html, **/manage.py, **/settings.py, **/styles.css, **/wsgi.py, **/urls.py, **/0001_initial.py, **/apps.py, **/asgi.py, **/admin.py, **/coverage.xml, **/models.py
+INFO:   Excluded sources for coverage: <no value>
+INFO: Load project repositories
+INFO: Load project repositories (done) | time=11ms
+INFO: 33 files indexed
+INFO: 27 files ignored because of inclusion/exclusion patterns
+INFO: 1 file ignored because of scm ignore settings
+INFO: Quality profile for css: Sonar way
+INFO: Quality profile for py: Sonar way
+INFO: ------------- Run sensors on module django_wiki
+INFO: Load metrics repository
+INFO: Load metrics repository (done) | time=17ms
+INFO: Sensor Python Sensor [python]
+INFO: Starting global symbols computation
+INFO: 5 source files to be analyzed
+INFO: Starting rules execution
+INFO: 5/5 source files have been analyzed
+INFO: 5 source files to be analyzed
+INFO: Sensor Python Sensor [python] (done) | time=5287ms
+INFO: 5/5 source files have been analyzed
+INFO: Sensor Cobertura Sensor for Python coverage [python]
+INFO: Python test coverage
+INFO: Parsing report '/Users/gibil/vscode/edx/cs50/project_1/web50/projects/2020/x/wiki/coverage-reports/coverage.xml'
+INFO: ------------------------------------------------------------------------
+INFO: EXECUTION FAILURE
+INFO: ------------------------------------------------------------------------
+INFO: Total time: 10.815s
+INFO: Final Memory: 83M/290M
+INFO: ------------------------------------------------------------------------

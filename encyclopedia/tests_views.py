@@ -18,7 +18,7 @@ SKIP_EDIT = 0
 SKIP_UPDATE = 0
 
 # ------------------------------------------------------------------------------
-#                              Test Transactions
+#                              Test Views
 # ------------------------------------------------------------------------------
 #@unittest.skip
 @unittest.skipIf(SKIP_REQ_TESTS, 'x')
@@ -35,8 +35,6 @@ class SimpleTest(unittest.TestCase):
         self.client = Client()
         self.pages = ['css', 'html', 'git', 'django', 'python']
         self.pages_ne = ['non_existant']
-        self.verbose = True
-        #self.verbose = False
 
     #@unittest.skip
     @unittest.skipIf(SKIP_INDEX, 'x')
@@ -47,8 +45,8 @@ class SimpleTest(unittest.TestCase):
         """
         print(f"{self.prefix}test_view_index")
         response = self.client.get('/')
-        #if self.verbose:
-        #    util.print_response(response)
+        x.printx(response)
+
 
     #@unittest.skip
     @unittest.skipIf(SKIP_SHOW, 'x')
@@ -61,13 +59,8 @@ class SimpleTest(unittest.TestCase):
 
         fnames = ['Css', 'HTML', 'Git', 'Django', 'Python', 'ne']
         pages = ['CSS', 'HTML', 'Git', 'Django', 'Python', 'ne']
-        #pages = ['CSS', 'HTML', 'Git', 'Django', 'Python']
-        #pages = ['ne']
-
         error_msg = 'Error: The requested page was not found.'
-        #x.printx(util.list_entries())
 
-        #for page in pages:
         for fname, page in zip(fnames, pages):
             request = f"/wiki/{page}/"
 
@@ -77,7 +70,7 @@ class SimpleTest(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
 
             # Check that the page has the correct title.
-            title = util.parse_title(str(response.content))
+            title = util.parse_title(html=str(response.content))
             x.printx(f'\n{title}, {page}')
 
             # If the page exists
@@ -97,15 +90,11 @@ class SimpleTest(unittest.TestCase):
         """
         print(f"{self.prefix}test_view_search")
 
-        #fnames = ['Css']
-        #pages = ['CSS']
         fnames = ['Css', 'HTML', 'Git', 'Django', 'Python', 'py', 'x']
         pages = ['CSS', 'HTML', 'Git', 'Django', 'Python', 'py', 'x']
-
         warning_msg = 'It might be here.'
         error_msg = 'Error: The requested page was not found.'
 
-        #for page in pages:
         for fname, page in zip(fnames, pages):
             request = f"/search/?q={page}"
             response = self.client.get(request)
@@ -114,7 +103,7 @@ class SimpleTest(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
 
             # Check that the page has the correct title
-            title = util.parse_title(str(response.content))
+            title = util.parse_title(html=str(response.content))
             x.printx(f'\n{title}, {page}')
 
             # If the page exists
@@ -122,7 +111,8 @@ class SimpleTest(unittest.TestCase):
                 self.assertEqual(title, page)
             # If the term is a substring
             #elif (entries := util.is_subtring(page, util.list_entries())):
-            elif (entries := util.is_subtring(page, util.list_entries())) != None:
+            #elif (entries := util.is_subtring(page, util.list_entries())) != None:
+            elif util.is_subtring(query=page, x_list=util.list_entries()) != None:
                 self.assertEqual(title, warning_msg)
             # The term is not a substring
             else:
@@ -145,19 +135,20 @@ class SimpleTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Check that the page has the correct title
-        title = util.parse_title(str(response.content))
-        #x.printx(f'\n{title}')
+        title = util.parse_title(html=str(response.content))
+        x.printx(f'\n{title}')
 
         # The page exists
         self.assertEqual(title, 'Create')
 
         # Check inputs
-        input_title = util.parse_inputs(str(response.content), 'input', 'title')
+        input_title = util.parse_inputs(html=str(response.content), tag='input', name='title')
         x.printx(f'{input_title}')
-        input_content = util.parse_inputs(str(response.content), 'textarea', 'content')
+        input_content = util.parse_inputs(html=str(response.content), tag='textarea', name='content')
         x.printx(f'{input_content}')
-        input_submit = util.parse_inputs(str(response.content), 'input', 'submit')
+        input_submit = util.parse_inputs(html=str(response.content), tag='input', name='submit')
         x.printx(f'{input_submit}')
+
 
 
     #@unittest.skip
@@ -170,7 +161,7 @@ class SimpleTest(unittest.TestCase):
         print(f"{self.prefix}test_view_create_post")
         title = 'Test'
         content = 'This is the content...'
-        util.delete_entry(title)
+        util.delete_entry(title=title)
 
         # Entry is created - success
         msg = '\n\nEntry is created'
@@ -180,7 +171,7 @@ class SimpleTest(unittest.TestCase):
         # Check that the response is 200 OK
         self.assertEqual(response.status_code, 200)
         # Check page
-        title = util.parse_title(str(response.content))
+        title = util.parse_title(html=str(response.content))
         x.printx(f'Title: {title}')
         self.assertEqual(title, 'Test')
 
@@ -192,7 +183,7 @@ class SimpleTest(unittest.TestCase):
         # Check that the response is 200 OK
         self.assertEqual(response.status_code, 200)
         # Check page
-        title = util.parse_title(str(response.content))
+        title = util.parse_title(html=str(response.content))
         x.printx(f'Title: {title}')
         self.assertEqual(title, 'Error: Entry already exists !')
 
@@ -204,7 +195,7 @@ class SimpleTest(unittest.TestCase):
         # Check that the response is 200 OK
         self.assertEqual(response.status_code, 200)
         # Check page
-        title = util.parse_title(str(response.content))
+        title = util.parse_title(html=str(response.content))
         x.printx(f'Title: {title}')
         self.assertEqual(title, 'Error: Form is not valid !')
 
@@ -227,17 +218,18 @@ class SimpleTest(unittest.TestCase):
         # Check that the response is 200 OK
         self.assertEqual(response.status_code, 200)
         # Check that the page has the correct title
-        title = util.parse_title(str(response.content))
+        title = util.parse_title(html=str(response.content))
         x.printx(f'\n{title}')
         # The page exists
         self.assertEqual(title, 'Edit')
+
         # Check inputs
-        input_title = util.parse_inputs(str(response.content), 'input', 'title')
-        #x.printx(f'{input_title}')
-        input_content = util.parse_inputs(str(response.content), 'textarea', 'content')
-        #x.printx(f'{input_content}')
-        input_submit = util.parse_inputs(str(response.content), 'input', 'Save')
-        #x.printx(f'{input_submit}')
+        input_title = util.parse_inputs(html=str(response.content), tag='input', name='title')
+        x.printx(f'{input_title}')
+        input_content = util.parse_inputs(html=str(response.content), tag='textarea', name='content')
+        x.printx(f'{input_content}')
+        input_submit = util.parse_inputs(html=str(response.content), tag='input', name='Save')
+        x.printx(f'{input_submit}')
 
 
     @unittest.skipIf(SKIP_UPDATE, 'x')
@@ -257,7 +249,7 @@ class SimpleTest(unittest.TestCase):
         # Check that the response is 200 OK
         self.assertEqual(response.status_code, 200)
         # Check page
-        title = util.parse_title(str(response.content))
+        title = util.parse_title(html=str(response.content))
         x.printx(f'Title: {title}')
         self.assertEqual(title, 'Test')
 
@@ -270,6 +262,6 @@ class SimpleTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Check page
-        title = util.parse_title(str(response.content))
+        title = util.parse_title(html=str(response.content))
         x.printx(f'Title: {title}')
         self.assertEqual(title, 'Error: Form is not valid !')

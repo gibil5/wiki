@@ -1,7 +1,7 @@
 """
 Module Views
     Created:    28 dec 2020
-    Last up:     8 jan 2021
+    Last up:     9 jan 2021
 
 Interface:
     index
@@ -10,6 +10,14 @@ Interface:
     create
     edit
     update
+
+Try and catch
+    try:
+        entry = util.get_entry(title=title)
+    except FileNotFoundError:
+        print('\nERROR')
+    else:
+        print('\nSUCCESS')
 """
 from markdown2 import Markdown
 from django.shortcuts import render
@@ -18,6 +26,11 @@ from django.forms import ModelForm
 from .models import Page
 from . import util
 from . import lib as x
+
+SUCCESS = '\nSUCCESS'
+ERROR = '\nERROR'
+
+PAGE_NOT_FOUND = 'The requested page was not found.'
 
 class PageForm(ModelForm):
     """
@@ -54,23 +67,17 @@ def index(request):
 def search(request):
     '''
     Search
-
-    try:
-        entry = util.get_entry(page)
-    except FileNotFoundError:
-        print('\nERROR')
-    else:
-        print('\nSUCCESS')
     '''
     x.printx('*** search')
-    query = request.GET.get('q', '')
-    try:
-        entry = util.get_entry(query)
+    title = request.GET.get('q', '')
 
+    # Try and catch
+    try:
+        entry = util.get_entry(title=title)
     except FileNotFoundError:
-        x.printx('\nERROR')
+        x.printx(ERROR)
         titles = []
-        titles = util.is_subtring(query, util.list_entries())
+        titles = util.is_subtring(query=title, x_list=util.list_entries())
         if titles:
             return render(request, "encyclopedia/warning.html", {
                 "entries": titles,
@@ -78,59 +85,46 @@ def search(request):
             })
         else:
             return render(request, "encyclopedia/error.html", {
-                "message": 'The requested page was not found.',
+                "message": PAGE_NOT_FOUND,
             })
-
     else:
-        x.printx('\nSUCCESS')
+        x.printx(SUCCESS)
         markdowner = Markdown()
         html = markdowner.convert(entry)
         return render(request, "encyclopedia/wiki.html", {
             "html": html,
-            "page": query,
+            "page": title,
         })
 
 
 
-def wiki(request, page):
+def wiki(request, title):
     """
     Req: /wiki/<page>/
-
-    try:
-        entry = util.get_entry(page)
-    except FileNotFoundError:
-        print('\nERROR')
-    else:
-        print('\nSUCCESS')
     """
     x.printx('*** wiki')
+
+    # Try and catch
     try:
-        entry = util.get_entry(page)
+        entry = util.get_entry(title=title)
     except FileNotFoundError:
-        x.printx('\nERROR')
+        x.printx(ERROR)
         return render(request, "encyclopedia/error.html", {
-            "message": 'The requested page was not found.',
+            "message": PAGE_NOT_FOUND,
         })
     else:
-        x.printx('\nSUCCESS')
+        x.printx(SUCCESS)
         markdowner = Markdown()
         html = markdowner.convert(entry)
         return render(request, "encyclopedia/wiki.html", {
             "html": html,
-            "page": page,
+            "page": title,
         })
 
 
 def create(request):
     """
     Create
-
-    try:
-        entry = util.get_entry(page)
-    except FileNotFoundError:
-        print('\nERROR')
-    else:
-        print('\nSUCCESS')
     """
     x.printx('*** create')
 
@@ -141,13 +135,14 @@ def create(request):
             content = form.cleaned_data["content"]
             x.printx('form IS valid')
 
+            # Try and catch
             try:
-                entry = util.get_entry(title)
+                entry = util.get_entry(title=title)
             except FileNotFoundError:
-                x.printx('\nERROR')
+                x.printx(ERROR)
                 x.printx('Entry is created')
-                util.save_entry(title, content)
-                entry = util.get_entry(title)
+                util.save_entry(title=title, content=content)
+                entry = util.get_entry(title=title)
                 markdowner = Markdown()
                 html = markdowner.convert(entry)
                 return render(request, "encyclopedia/wiki.html", {
@@ -155,11 +150,12 @@ def create(request):
                     "page": entry,
                 })
             else:
-                x.printx('\nSUCCESS')
+                x.printx(SUCCESS)
                 x.printx('Entry already exists')
                 return render(request, "encyclopedia/error.html", {
                     "message": 'Entry already exists !'
                 })
+
         else:
             x.printx('form is NOT valid')
             return render(request, "encyclopedia/error.html", {
@@ -177,38 +173,32 @@ def edit(request, page):
     Edit
     """
     x.printx('*** edit')
-    #print(request)
-    #print(page)
-    query = request.POST.get('q', '')
-    #print(query)
 
     if request.method == 'GET':
         #print('get')
         x.printx('** get')
         title = page
 
+        # Try and catch
         try:
-            entry = util.get_entry(title)
+            entry = util.get_entry(title=title)
             content = entry
         except FileNotFoundError:
-            x.printx('\nERROR')
+            x.printx(ERROR)
             return render(request, "encyclopedia/error.html", {
-                "message": 'The requested page was not found.',
+                "message": PAGE_NOT_FOUND,
             })
         else:
-            x.printx('\nSUCCESS')
+            x.printx(SUCCESS)
             obj = Page(title=title, content=content, name=title)
             form = PageForm(instance=obj)
             return render(request, "encyclopedia/edit.html", {
                 "form": form,
             })
-        #content = util.get_entry(title)
 
-    else:
+    elif request.method == 'POST':
         x.printx('** post')
-        print('This should not happen !')
-        raise ThisShouldNotHappen('This should not happen')
-
+        print('This should never happen !')
 
 
 def update(request):
@@ -229,24 +219,24 @@ def update(request):
             content = form.cleaned_data["content"]
             x.printx(f'Title: {title}')
             x.printx(f'Content: {content}')
-            util.save_entry(title, content)
+            util.save_entry(title=title, content=content)
 
+            # Try and catch
             try:
-                entry = util.get_entry(title)
+                entry = util.get_entry(title=title)
             except FileNotFoundError:
-                x.printx('\nERROR')
+                x.printx(ERROR)
                 return render(request, "encyclopedia/error.html", {
-                    "message": 'The requested page was not found.',
+                    "message": PAGE_NOT_FOUND,
                 })
             else:
-                x.printx('\nSUCCESS')
+                x.printx(SUCCESS)
                 markdowner = Markdown()
                 html = markdowner.convert(entry)
                 return render(request, "encyclopedia/wiki.html", {
                     "html": html,
                     "page": entry,
                 })
-            #entry = util.get_entry(title)
 
         else:
             x.printx('form not valid')
@@ -254,7 +244,6 @@ def update(request):
                 "message": 'Form is not valid !'
             })
 
-    else:
+    elif request.method == 'GET':
         print('get')
         print('This should not happen !')
-        raise ThisShouldNotHappen('This should not happen')
