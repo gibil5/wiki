@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Test Libs - Util
 
@@ -32,6 +33,7 @@ class UtilLibraryTestCase(unittest.TestCase):
 
 
     #@unittest.skip
+    @x.trace
     def test_lib_list_entries(self):
         """
         List of entries
@@ -48,7 +50,6 @@ class UtilLibraryTestCase(unittest.TestCase):
         """
         print(f"{self.prefix}test_lib_get_entry")
         titles = ['python', 'not_available']
-
         for title in titles:
             try:
                 entry = util.get_entry(title=title)
@@ -58,7 +59,6 @@ class UtilLibraryTestCase(unittest.TestCase):
             else:
                 x.printx('\nSUCCESS')
                 self.assertEqual(entry, self.entry)
-
 
 
     #@unittest.skip

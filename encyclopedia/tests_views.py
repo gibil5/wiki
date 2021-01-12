@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Test Views
 
@@ -5,6 +6,7 @@ Test Views
     Last up:    11 Jan 2021
 """
 import unittest
+from functools import wraps
 from django.test import Client
 from . import util
 from . import lib as x
@@ -38,6 +40,7 @@ class SimpleTest(unittest.TestCase):
 
     #@unittest.skip
     @unittest.skipIf(SKIP_INDEX, 'x')
+    #@util.trace
     def test_view_index(self):
         """
         Index view
@@ -50,6 +53,7 @@ class SimpleTest(unittest.TestCase):
 
     #@unittest.skip
     @unittest.skipIf(SKIP_SHOW, 'x')
+    #@util.trace
     def test_view_show(self):
         """
         Show view
@@ -83,6 +87,7 @@ class SimpleTest(unittest.TestCase):
 
     #@unittest.skip
     @unittest.skipIf(SKIP_SEARCH, 'x')
+    #@util.trace
     def test_view_search(self):
         """
         Search view

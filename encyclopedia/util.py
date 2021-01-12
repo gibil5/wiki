@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Module Util
     Created:    28 dec 2020
@@ -15,13 +16,16 @@ Interface:
     - parse_inputs(html, tag, name)
 """
 import re
+from functools import wraps
 from bs4 import BeautifulSoup
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+from . import lib
 
 # ------------------------------------------------------------------------------
 #                              Entries
 # ------------------------------------------------------------------------------
+@lib.trace
 def list_entries():
     """
     Returns a list of all names of encyclopedia entries.
@@ -37,6 +41,7 @@ def list_entries():
     return list(sorted(arr))
 
 
+#@lib.trace
 def get_entry(*, title):
     """
     Keyword only, for clarity
@@ -59,6 +64,7 @@ def get_entry(*, title):
         raise FileNotFoundError('File not found')
 
 
+@lib.trace
 def save_entry(*, title, content):
     """
     Saves an encyclopedia entry, given its title and Markdown content.
@@ -75,6 +81,7 @@ def save_entry(*, title, content):
     default_storage.save(filename, ContentFile(content_file))
 
 
+@lib.trace
 def delete_entry(*, title):
     """
     Deletes an encyclopedia entry, given its title.
@@ -87,23 +94,29 @@ def delete_entry(*, title):
 # ------------------------------------------------------------------------------
 #                              Utilities
 # ------------------------------------------------------------------------------
+@lib.trace
 def is_subtring(*, query, x_list):
     """
     Is substring
     Keyword only, for clarity
     """
     query = query.lower()
-    x_list = [x.lower() for x in x_list]
-    titles = []
-    for title in x_list:
-        if query in title:
-            titles.append(title)
+
+    x_list = [x.lower() for x in x_list]    # list comprehension
+
+    #titles = []
+    #for title in x_list:
+    #    if query in title:
+    #        titles.append(title)
+    titles = [x for x in x_list if query in x]  # list comprehension
+
     if titles:
         return titles
     else:
         return None
 
 
+#@lib.trace
 def parse_title(*, html):
     """
     Parse title
@@ -117,6 +130,7 @@ def parse_title(*, html):
         return None
 
 
+#@lib.trace
 def parse_inputs(*, html, tag, name):
     """
     Parse inputs
@@ -148,3 +162,5 @@ def print_response(response):
     print(f"\nThe template is:\n{response.templates}", )
     print(f"\nThe resolver_match is:\n{response.resolver_match}", )
     print(f"\nThe text is:\n{response.text}", )
+
+
